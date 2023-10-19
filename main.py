@@ -47,11 +47,26 @@ bot = Client(
     api_hash=api_hash,
     bot_token=bot_token)
       
-@bot.on_message(filters.command(["start"])&(filters.chat(auth_users)))
-async def start_handler(bot: Client, m: Message):        
-        editable = await m.reply_text(
-            "Hello 👋 **I am a simple video downloader bot**.\n\n**Developer** : उत्कर्ष\n**Language** : Python\n**Framework** : Pyrogram\n\n/txt - **To download from TXT file.**\n/terms - **To know our our terms and conditions.**")
-            
+@bot.on_message(filters.command(["start"]) & filters.chat(auth_users))
+async def start_handler(bot: Client, m: Message):
+    menu_text = (
+        "Welcome to Meta Downloader Bot! \n\n"
+        "[Generic Services]\n"
+        "1. Generic without any headers\n"
+        "2. Generic with generic headers\n"
+        "3. Generic with headers from DRMHeaders.py\n"
+        "4. JSON Widevine challenge, headers from DRMHeaders.py \n\n"
+        "[Specific Services]\n"
+        "5. Classplus Non DRM Downloads\n"
+        "6. YouTube VOD with DRM\n"
+        "7. Classsuplus with and alone VDOCipher\n"
+        "8. StudyIQ\n"
+        "9. Adda247\n"
+    )
+    
+    await m.reply_text(menu_text)
+
+
 @bot.on_message(filters.command(["restart"]))
 async def restart_handler(bot: Client, m: Message):
  rcredit = "Bot Restarted by " + f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
@@ -89,14 +104,14 @@ def humanbytes(size):
         n += 1
     return f"{str(round(size, 2))} {Dic_powerN[n]}B"
 
-@bot.on_message(filters.command(["cpdf"])&(filters.chat(auth_users)))
+@bot.on_message(filters.command(["pdf"])&(filters.chat(auth_users)))
 async def c_pdf(bot: Client, m: Message):
-    editable = await m.reply_text("**Hello I am CW pdf DL Bot\n\nSend TXT To Download.**")
+    editable = await m.reply_text("**Hello I am All in one pdf DL Bot\n\nSend TXT file To Download.**")
     input99: Message = await bot.listen(editable.chat.id)
     x = await input99.download()
     await input99.delete(True)
     try:         
-        with open(x, "r") as f:
+        with open(x, "r", encoding="utf-8") as f:
              content = f.read()
              content = content.split("\n")
         links = []
@@ -110,7 +125,7 @@ async def c_pdf(bot: Client, m: Message):
         os.remove(x)
         return
         
-    editable = await m.reply_text(f"Total links found are {len(links)}\n\nSend From where you want to download,\n\nInitial is 0")
+    editable = await m.reply_text(f"Total links found in given txt {len(links)}\n\nSend From range, you want to download,\n\nInitial is 0")
     input1: Message = await bot.listen(editable.chat.id)
     count = input1.text
     count = int(count)      	
@@ -127,10 +142,10 @@ async def c_pdf(bot: Client, m: Message):
           await m.reply_document(f'{name}.pdf', caption=cc)
           count += 1
           os.remove(f'{name}.pdf')
-          time.sleep(3)
+          time.sleep(2)
     except Exception as e:
         await m.reply_text(e)
-    await m.reply_text("Done ✅")
+    await m.reply_text("Completed ✅")
 
 @bot.on_message(filters.command(["stats"]))
 async def stats(_,event: Message):
@@ -465,7 +480,7 @@ async def txt_handler(bot: Client, m: Message):
             parsed_url = urlparse(url)
             namex = links[i].strip().replace(urlm,'') if '://' in links[i].strip() and links[i].strip().replace(url,'') !='' else parsed_url.path.split('/')[-1]
             nameeex = namex if namex != '' and 'NoLinkFound' else 'NA'
-            namme = nameeex.replace("\t", "").replace(":", "").replace("/","").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("/u","").replace('"','').replace('mp4','').replace('mkv','').replace('m3u8','').strip()[:60] + f"({res})" + "BeastX"
+            namme = nameeex.replace("\t", "").replace(":", "").replace("/","").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("/u","").replace('"','').replace('mp4','').replace('mkv','').replace('m3u8','').strip()[:60] + f"({res})" + ""
             name = namme.strip()
             if "videos.classplusapp" in url:
             	headers = {'Host': 'api.classplusapp.com', 'x-access-token': 'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6MzgzNjkyMTIsIm9yZ0lkIjoyNjA1LCJ0eXBlIjoxLCJtb2JpbGUiOiI5MTcwODI3NzQyODkiLCJuYW1lIjoiQWNlIiwiZW1haWwiOm51bGwsImlzRmlyc3RMb2dpbiI6dHJ1ZSwiZGVmYXVsdExhbmd1YWdlIjpudWxsLCJjb3VudHJ5Q29kZSI6IklOIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJpYXQiOjE2NDMyODE4NzcsImV4cCI6MTY0Mzg4NjY3N30.hM33P2ai6ivdzxPPfm01LAd4JWv-vnrSxGXqvCirCSpUfhhofpeqyeHPxtstXwe0', 'user-agent': 'Mobile-Android', 'app-version': '1.4.37.1', 'api-version': '18', 'device-id': '5d0d17ac8b3c9f51', 'device-details': '2848b866799971ca_2848b8667a33216c_SDK-30', 'accept-encoding': 'gzip'}
