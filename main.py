@@ -52,8 +52,8 @@ async def start_handler(bot: Client, m: Message):
     menu_text = (
         "Welcome to Meta Downloader Bot! \n\n"
         "[Generic Services]\n"
-        "1. Generic without any headers\n"
-        "2. Generic with generic headers\n"
+        "1. For All PDF /pdf\n"
+        "2. For TXT /txt\n"
         "3. Generic with headers from DRMHeaders.py\n"
         "4. JSON Widevine challenge, headers from DRMHeaders.py \n\n"
         "[Specific Services]\n"
