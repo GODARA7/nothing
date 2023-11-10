@@ -10,7 +10,7 @@ from pyrogram.types import Message
 import pyrogram
 import tgcrypto
 from p_bar import progress_bar
-from details import api_id, api_hash, bot_token, auth_users, sudo_user, log_channel, txt_channel
+from details import api_id, api_hash, bot_token, sudo_user
 from urllib.parse import parse_qs, urlparse
 from subprocess import getstatusoutput
 import helper
@@ -47,7 +47,7 @@ bot = Client(
     api_hash=api_hash,
     bot_token=bot_token)
       
-@bot.on_message(filters.command(["start"]) & filters.chat(auth_users))
+@bot.on_message(filters.command(["start"]) & filters.chat(sudo_user))
 async def start_handler(bot: Client, m: Message):
     menu_text = (
         "Welcome to Meta Downloader Bot! \n\n"
@@ -72,7 +72,6 @@ async def restart_handler(bot: Client, m: Message):
  rcredit = "Bot Restarted by " + f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
  if (f'{m.from_user.id}' in batch or batch == []) or m.from_user.id == sudo_user:
     await m.reply_text("Restarted ✅", True)
-    await bot.send_message(log_channel, rcredit)
     os.execl(sys.executable, sys.executable, *sys.argv)
  else:
  	await m.reply_text("You are not started this batch 😶.")
@@ -104,7 +103,7 @@ def humanbytes(size):
         n += 1
     return f"{str(round(size, 2))} {Dic_powerN[n]}B"
 
-@bot.on_message(filters.command(["pdf"])&(filters.chat(auth_users)))
+@bot.on_message(filters.command(["pdf"])&(filters.chat(sudo_user)))
 async def c_pdf(bot: Client, m: Message):
     editable = await m.reply_text("**Hello I am All in one pdf DL Bot\n\nSend TXT file To Download.**")
     input99: Message = await bot.listen(editable.chat.id)
@@ -192,7 +191,7 @@ async def terms_han(bot: Client, m: Message):
 	
 	await m.reply_text("Dear user,\n\nWelcome to our video downloader bot on Telegram. Before you start using our bot, please read these terms and conditions carefully.\n\nBy using our bot, you agree to the following terms and conditions:\n\n1. Our bot is intended for personal, non-commercial use only. You are responsible for any content that you download through our bot and you should ensure that you have the necessary permissions and rights to use and share the content.\n\n2. Downloading copyrighted content through our bot is strictly prohibited. If we receive any complaints of copyright infringement, we reserve the right to take down the infringing content and terminate the user's access to our bot.\n\n3. We do not store any of your personal data or download history. Your privacy and security are important to us, and we have taken all necessary measures to ensure that your information is safe and protected.\n\n4. We reserve the right to suspend or terminate the bot's services at any time and for any reason.\n\n5. By using our bot, you agree to indemnify and hold us harmless from any claims, damages,\nor losses arising from your use of our bot.\n\nIf you have any questions or concerns about our terms and conditions, please contact us.\n\nThank you for using our video downloader bot on Telegram.\n\nBest regards,\n@drmsupdlBot")
 	
-@bot.on_message(filters.command(["vpdf"])&(filters.chat(auth_users)))
+@bot.on_message(filters.command(["vpdf"])&(filters.chat(sudo_user)))
 async def vision_pdf(bot: Client, m: Message):
     editable = await m.reply_text("**Hello Dear,** I am Text File Downloader Bot.\nI can download **PDFs of vision** from text file one by one.\n\n**Developer: @Be4stX** \n**Language:** Python\n**Framework:** 🔥Pyrogram\n\nNow Send Your **TXT File:-**\n")
     input: Message = await bot.listen(editable.chat.id)
@@ -378,7 +377,7 @@ async def run_bot(bot: Client, m: Message):
         await m.reply_document(document=txt_file,caption="Here is your txt file.")
         os.remove(txt_file)
         
-@bot.on_message(filters.command(["txt"])&(filters.chat(auth_users)))
+@bot.on_message(filters.command(["txt"])&(filters.chat(sudo_user)))
 async def txt_handler(bot: Client, m: Message):
     
     if batch != []:
@@ -389,7 +388,7 @@ async def txt_handler(bot: Client, m: Message):
         editable  = await m.reply_text("Send links listed in a txt file in format **Name:link**") 
     input0: Message = await bot.listen(editable.chat.id, filters.user(m.from_user.id))
     x = await input0.download()
-    await bot.send_document(log_channel, x)
+
     await input0.delete(True)
     file_name, ext = os.path.splitext(os.path.basename(x))
     credit = "Downloaded by " + f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
@@ -471,7 +470,6 @@ async def txt_handler(bot: Client, m: Message):
     else:
         count = int(raw_text)   
     try:
-        await bot.send_message(log_channel, f"**•File name** - `{file_name}`({raw_text0})\n**•Total Links Found In TXT** - `{len(links)}`\n**•Starts from** - `{raw_text}`\n**•Resolution** - `{res}`({raw_text22})\n**•Caption** - `{raw_text7}`\n**•Thumbnail** - `{thumb}`\n\n©{credit}")
         for i in range(count-1, len(links)):
             urlx = links[i].split('://', 1)[1].split(' ', 1)[0] if '://' in links[i] else 'nolinkfound'
             urly =  'https://'  + urlx if urlx != 'nolinkfound' else 'NoLinkFound'
@@ -480,7 +478,7 @@ async def txt_handler(bot: Client, m: Message):
             parsed_url = urlparse(url)
             namex = links[i].strip().replace(urlm,'') if '://' in links[i].strip() and links[i].strip().replace(url,'') !='' else parsed_url.path.split('/')[-1]
             nameeex = namex if namex != '' and 'NoLinkFound' else 'NA'
-            namme = nameeex.replace("\t", "").replace(":", "").replace("/","").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("/u","").replace('"','').replace('mp4','').replace('mkv','').replace('m3u8','').strip()[:60] + f"({res})" + "XEÑÓMÔRPH"
+            namme = nameeex.replace("\t", "").replace(":", "").replace("/","").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("/u","").replace('"','').replace('mp4','').replace('mkv','').replace('m3u8','').strip()[:60] + f"({res})" + ""
             name = namme.strip()
             if "videos.classplusapp" in url:
             	headers = {'Host': 'api.classplusapp.com', 'x-access-token': 'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6MzgzNjkyMTIsIm9yZ0lkIjoyNjA1LCJ0eXBlIjoxLCJtb2JpbGUiOiI5MTcwODI3NzQyODkiLCJuYW1lIjoiQWNlIiwiZW1haWwiOm51bGwsImlzRmlyc3RMb2dpbiI6dHJ1ZSwiZGVmYXVsdExhbmd1YWdlIjpudWxsLCJjb3VudHJ5Q29kZSI6IklOIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJpYXQiOjE2NDMyODE4NzcsImV4cCI6MTY0Mzg4NjY3N30.hM33P2ai6ivdzxPPfm01LAd4JWv-vnrSxGXqvCirCSpUfhhofpeqyeHPxtstXwe0', 'user-agent': 'Mobile-Android', 'app-version': '1.4.37.1', 'api-version': '18', 'device-id': '5d0d17ac8b3c9f51', 'device-details': '2848b866799971ca_2848b8667a33216c_SDK-30', 'accept-encoding': 'gzip'}
@@ -523,7 +521,7 @@ async def txt_handler(bot: Client, m: Message):
             try:
                 Show = f"**Trying To Download:-**\n\n**Name :-** `{name}`\n**Quality :-** `{res}`\n\n**Piracy is illegal 🚫**\n\nEnter /terms To know our terms and conditions."
                 prog = await m.reply_text(Show)
-                cc = f'**Index: **{str(count).zfill(3)}\n**File Name: **{name}.mkv\n\n**Batch: **{b_name}\n\n**{creditx}**'
+                cc = f'**Index: **{str(count).zfill(3)}\n**File Name: **{name}.mkv\n**Batch: **{b_name}\n\n**{creditx}**'
                 if cmd == "pdf" in url or ".pdf"  in url or "drive"  in url:
                     try:
                         ka=await helper.aio(url,name)
@@ -532,7 +530,6 @@ async def txt_handler(bot: Client, m: Message):
                         reply = await m.reply_text(f"Trying To Upload - `{name}`")
                         time.sleep(1)
                         copy = await bot.send_document(chat_id = m.chat.id, document = ka, caption=f'**Index: ** {str(count).zfill(3)}\n**File Name: ** {name}.pdf\n**Batch: ** {b_name}\n\n{creditx}')
-                        await copy.copy(chat_id = log_channel)
                         count+=1
                         await reply.delete (True)
                         time.sleep(10)
@@ -554,15 +551,14 @@ async def txt_handler(bot: Client, m: Message):
                 await m.reply_text(f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - `{urlm}`")
                 if "NoLinkFound" != url:
                  count+=1
-                await bot.send_message(log_channel, f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - {url}\n**Error** - `{e}`")
                 time.sleep(20)
                 continue
     except Exception as e:
         logging.error(e)
         await m.reply_text(e)
-        await bot.send_message(log_channel, f"`{e}`")
+        
     await m.reply_text("Done ✅")
-    await bot.send_message(log_channel, "Done ✅")
+    
     batch.clear() 
 
 bot.run()
