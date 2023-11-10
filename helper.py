@@ -11,7 +11,6 @@ import tgcrypto
 import aiofiles
 from pyrogram.types import Message
 from pyrogram import Client, filters
-from details import log_channel
 import re
 
 def duration(filename):
@@ -217,13 +216,13 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog):
                              duration=dur,
                              progress=progress_bar,
                              progress_args=(reply, start_time))
-        await bot.send_video(log_channel, filename, caption=cc, supports_streaming=True, height=720, width=1280, thumb=thumbnail, duration=dur)
+    
     except Exception:
         await bot.send_document(chat_id=m.chat.id,document=filename,
                                caption=cc,
                                progress=progress_bar,
                                progress_args=(reply, start_time))
-        await bot.send_document(log_channel, filename, caption=cc)
+        
 
     os.remove(filename)
 
