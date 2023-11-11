@@ -47,13 +47,13 @@ bot = Client(
     api_hash=api_hash,
     bot_token=bot_token)
       
-@bot.on_message(filters.command(["start"]) & filters.chat(sudo_user))
+@bot.on_message(filters.command(["start"]) & filters.chat(sudo_groups))
 async def start_handler(bot: Client, m: Message):
     menu_text = (
         "Welcome to Meta Downloader Bot! \n\n"
         "[Generic Services]\n"
         "1. For All PDF /pdf\n"
-        "2. For TXT /txt\n"
+        "2. For TXT /tor\n"
         "3. Generic with headers from DRMHeaders.py\n"
         "4. JSON Widevine challenge, headers from DRMHeaders.py \n\n"
         "[Specific Services]\n"
@@ -70,7 +70,7 @@ async def start_handler(bot: Client, m: Message):
 @bot.on_message(filters.command(["restart"]))
 async def restart_handler(bot: Client, m: Message):
  rcredit = "Bot Restarted by " + f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
- if (f'{m.from_user.id}' in batch or batch == []) or m.from_user.id == sudo_user:
+ if (f'{m.from_user.id}' in batch or batch == []) or m.from_user.id == sudo_groups:
     await m.reply_text("Restarted ✅", True)
     os.execl(sys.executable, sys.executable, *sys.argv)
  else:
@@ -103,7 +103,7 @@ def humanbytes(size):
         n += 1
     return f"{str(round(size, 2))} {Dic_powerN[n]}B"
 
-@bot.on_message(filters.command(["pdf"])&(filters.chat(sudo_user)))
+@bot.on_message(filters.command(["pdf"])&(filters.chat(sudo_groups)))
 async def c_pdf(bot: Client, m: Message):
     editable = await m.reply_text("**Hello I am All in one pdf DL Bot\n\nSend TXT file To Download.**")
     input99: Message = await bot.listen(editable.chat.id)
@@ -190,194 +190,8 @@ async def stats(_,event: Message):
 async def terms_han(bot: Client, m: Message):
 	
 	await m.reply_text("Dear user,\n\nWelcome to our video downloader bot on Telegram. Before you start using our bot, please read these terms and conditions carefully.\n\nBy using our bot, you agree to the following terms and conditions:\n\n1. Our bot is intended for personal, non-commercial use only. You are responsible for any content that you download through our bot and you should ensure that you have the necessary permissions and rights to use and share the content.\n\n2. Downloading copyrighted content through our bot is strictly prohibited. If we receive any complaints of copyright infringement, we reserve the right to take down the infringing content and terminate the user's access to our bot.\n\n3. We do not store any of your personal data or download history. Your privacy and security are important to us, and we have taken all necessary measures to ensure that your information is safe and protected.\n\n4. We reserve the right to suspend or terminate the bot's services at any time and for any reason.\n\n5. By using our bot, you agree to indemnify and hold us harmless from any claims, damages,\nor losses arising from your use of our bot.\n\nIf you have any questions or concerns about our terms and conditions, please contact us.\n\nThank you for using our video downloader bot on Telegram.\n\nBest regards")
-	
-@bot.on_message(filters.command(["vpdf"])&(filters.chat(sudo_user)))
-async def vision_pdf(bot: Client, m: Message):
-    editable = await m.reply_text("**Hello Dear,** I am Text File Downloader Bot.\nI can download **PDFs of vision** from text file one by one.\n\n**Developer: @Be4stX** \n**Language:** Python\n**Framework:** 🔥Pyrogram\n\nNow Send Your **TXT File:-**\n")
-    input: Message = await bot.listen(editable.chat.id)
-    x = await input.download()
-    await input.delete(True)
-
-    path = f"./downloads/{m.chat.id}"
-
-    try:
-            with open(x, "r") as f:
-                content = f.read()
-            content = content.split("\n")
-
-            links = []
-            for i in content:
-                links.append(i.split(":", 1))
-            os.remove(x)
-    except:
-            await m.reply_text("Invalid file input.☹️")
-            os.remove(x)
-            return
-            
-    editable = await m.reply_text(f"Total links found are {len(links)}\n\nSend From where you want to download,\n\nInitial is 0")
-    input1: Message = await bot.listen(editable.chat.id)
-    count = input1.text
-    count = int(count)      	
-    	            
-    await m.reply_text("**Enter Batch Name**")
-    inputy: Message = await bot.listen(editable.chat.id)
-    raw_texty = inputy.text
-
-    await m.reply_text("**Enter Cookie**")
-    input2: Message = await bot.listen(editable.chat.id)
-    cookie = input2.text
-    cookies = cookies = {'PHPSESSID': f'{cookie}'}
         
-    try:
-        for i in range(count, len(links)):
-
-           url = links[i][1]
-           name1 = links[i][0].replace("\t", "").replace(":", "").replace("/","").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").strip()[:57]
-           name = f'{str(count).zfill(3)}) {name1}'
-           cc = f'{str(count).zfill(3)}. {name1}.pdf\n\n**Batch:-** {raw_texty}\n\n'
-           if "mode" in url:
-            parsed_url = urlparse(url)
-            query_params = parse_qs(parsed_url.query)
-            test_id = query_params.get('test_id', [None])[0]
-            package_id = query_params.get('package_id', [None])[0]
-            mode = query_params.get('mode', [None])[0]
-            params = {
-            'test_id': f"{test_id}",
-            'package_id': f"{package_id}",
-            'mode':f"{mode}",
-                              }
-           else:
-            parsed_url = urlparse(url)
-            query_params = parse_qs(parsed_url.query)
-            test_id = query_params.get('test_id', [None])[0]
-            package_id = query_params.get('package_id', [None])[0]
-            medium = query_params.get('medium', [None])[0]
-            file = query_params.get('file', [None])[0]
-            params = {
-            'test_id': f"{test_id}",
-            'package_id': f"{package_id}",
-            'medium':f"{medium}",
-            'file':f"{file}",
-                              }
-           headersx = {
-
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-
-    'Accept-Language': 'en-US,en;q=0.9',
-
-    'Cache-Control': 'max-age=0',
-
-    'Connection': 'keep-alive',
-
-    'DNT': '1',
-
-    'Referer': 'http://visionias.in/student/pt/pt_list_1_dashboard.php',
-
-    'Sec-GPC': '1',
-
-    'Upgrade-Insecure-Requests': '1',
-
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
-
-}
-           response = requests.get(
-    'http://visionias.in/student/pt/test_pdf.php',
-    params=params,
-    cookies=cookies,
-    headers=headersx,
-    verify=False,
-)
-           output_file = f"{name}.pdf"
-           if response.status_code == 200:
-             with open(output_file, 'wb') as file:
-              file.write(response.content)
-              await m.reply_document(output_file, caption=cc)
-           count += 1
-           os.remove(output_file)
-           time.sleep(3)
-    except Exception as e:
-        await m.reply_text(e)
-    await m.reply_text("Done ✅")
-
-@bot.on_message(filters.command('vision'))
-async def vision_pdf(bot: Client, m: Message):
-    editable = await m.reply_text("Send txt file")
-    input: Message = await bot.listen(editable.chat.id)
-    if 2 + 2 == 4: #hehe
-        x = await input.download()
-        await input.delete(True)
-
-        path = f"./downloads/{m.chat.id}"
-
-        try:
-            with open(x, "r") as f:
-                content = f.read()
-            content = content.split("\n")
-
-            links = []
-            for i in content:
-                links.append(i.split(":", 1))
-            os.remove(x)
-        except:
-            await m.reply_text("Invalid file input.")
-            os.remove(x)
-            return
-            
-    editable = await m.reply_text(f"Total links found are {len(links)}\n\nSend From where you want to download, Initial is 0")
-    input1: Message = await bot.listen(editable.chat.id)
-    count = input1.text
-    count = int(count)      	
-    	            
-    await m.reply_text("Batch name")
-    inputy: Message = await bot.listen(editable.chat.id)
-    raw_texty = inputy.text
-
-    await m.reply_text("Cookie")
-    input2: Message = await bot.listen(editable.chat.id)
-    cookie = input2.text
-    cookies = cookies = {'PHPSESSID': f'{cookie}'}
-        
-    try:
-        for i in range(count, len(links)):
-
-            url = links[i][1]
-            name1 = links[i][0].replace("\t", "").replace(":", "").replace("/","").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").strip()[:57]
-            name = f'{str(count).zfill(3)}) {name1}'
-            cc = f'vision pdf'
-            ka = await helper.vision(url, name, cookies)
-            await m.reply_document(ka, caption=f'{name}.pdf')
-            count += 1
-            os.remove(ka)
-            time.sleep(3)
-    except Exception as e:
-        await m.reply_text(e)
-    await m.reply_text("Done ✅")
-
-@bot.on_message(filters.command('h2t'))
-async def run_bot(bot: Client, m: Message):
-        editable = await m.reply_text(" **Send Your HTML file**\n")
-        input: Message = await bot.listen(editable.chat.id)
-        html_file = await input.download()
-        await input.delete(True)
-        await editable.delete()
-        with open(html_file, 'r') as f:
-            soup = BeautifulSoup(f, 'html.parser')
-            tables = soup.find_all('table')
-            videos = []
-            for table in tables:
-                rows = table.find_all('tr')
-                for row in rows:
-                    cols = row.find_all('td')
-                    name = cols[0].get_text().strip()
-                    link = cols[1].find('a')['href']
-                    videos.append(f'{name}:{link}')
-        txt_file = os.path.splitext(html_file)[0] + '.txt'
-        with open(txt_file, 'w') as f:
-            f.write('\n'.join(videos))
-        await m.reply_document(document=txt_file,caption="Here is your txt file.")
-        os.remove(txt_file)
-        
-@bot.on_message(filters.command(["txt"])&(filters.chat(sudo_user)))
+@bot.on_message(filters.command(["tor"])&(filters.chat(sudo_groups)))
 async def txt_handler(bot: Client, m: Message):
     
     if batch != []:
@@ -521,7 +335,7 @@ async def txt_handler(bot: Client, m: Message):
             try:
                 Show = f"**Trying To Download:-**\n\n**Name :-** `{name}`\n**Quality :-** `{res}`\n\n**Piracy is illegal 🚫**\n\nEnter /terms To know our terms and conditions."
                 prog = await m.reply_text(Show)
-                cc = f'**Index: **{str(count).zfill(3)}\n**File Name: **{name}.mkv\n**Batch: **{b_name}\n\n**{creditx}**'
+                cc = f'**Index  » **{str(count).zfill(3)}\n**Title » **{name}.mkv\n**Batch: **{b_name}\n\n**{creditx}**'
                 if cmd == "pdf" in url or ".pdf"  in url or "drive"  in url:
                     try:
                         ka=await helper.aio(url,name)
@@ -529,7 +343,7 @@ async def txt_handler(bot: Client, m: Message):
                         time.sleep(1)
                         reply = await m.reply_text(f"Trying To Upload - `{name}`")
                         time.sleep(1)
-                        copy = await bot.send_document(chat_id = m.chat.id, document = ka, caption=f'**Index: ** {str(count).zfill(3)}\n**File Name: ** {name}.pdf\n**Batch: ** {b_name}\n\n{creditx}')
+                        copy = await bot.send_document(chat_id = m.chat.id, document = ka, caption=f'**Index  » ** {str(count).zfill(3)}\n**Title » ** {name}.pdf\n**Batch: ** {b_name}\n\n{creditx}')
                         count+=1
                         await reply.delete (True)
                         time.sleep(10)
