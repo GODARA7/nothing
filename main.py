@@ -10,7 +10,7 @@ from pyrogram.types import Message
 import pyrogram
 import tgcrypto
 from p_bar import progress_bar
-from details import api_id, api_hash, bot_token, sudo_user
+from details import api_id, api_hash, bot_token, sudo_groups
 from urllib.parse import parse_qs, urlparse
 from subprocess import getstatusoutput
 import helper
