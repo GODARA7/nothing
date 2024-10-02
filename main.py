@@ -221,12 +221,12 @@ async def txt_handler(bot: Client, m: Message):
         os.remove(x)
         return
     await editable.edit(f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **1**")
-    input1: Message = await bot.listen(editable.chat.id, filters.user(m.from_user.id))
+    input1: Message = await bot.listen(editable.chat.id )
     raw_text = input1.text
     await input1.delete(True)
     
     await editable.edit("**Enter Batch Name or send `df` for grebbing it from txt.**")
-    input0: Message = await bot.listen(editable.chat.id, filters.user(m.from_user.id))
+    input0: Message = await bot.listen(editable.chat.id )
     raw_text0 = input0.text 
     if raw_text0 == 'df':
         b_name = file_name
@@ -234,7 +234,7 @@ async def txt_handler(bot: Client, m: Message):
         b_name = raw_text0
     await input0.delete(True)  
     await editable.edit("**Enter resolution:**")
-    input2: Message = await bot.listen(editable.chat.id, filters.user(m.from_user.id))
+    input2: Message = await bot.listen(editable.chat.id )
     raw_text22 = input2.text
     await input2.delete(True)
     try:
@@ -255,7 +255,7 @@ async def txt_handler(bot: Client, m: Message):
     except Exception:
             res = "UN"
     await editable.edit("**Enter Caption or send `df` for default or just /skip**")    
-    input7: Message = await bot.listen(editable.chat.id, filters.user(m.from_user.id))
+    input7: Message = await bot.listen(editable.chat.id )
     raw_text7 = input7.text 
     if raw_text7 == 'df':
         creditx = credit
@@ -269,7 +269,7 @@ async def txt_handler(bot: Client, m: Message):
         creditx = raw_text7
     await input7.delete(True) 
     await editable.edit("Now send the **Thumb url**\nEg : `https://telegra.ph/file/15d338d5d116a1e591a10.jpg`\n\nor Send `no`")
-    input6: Message = await bot.listen(editable.chat.id, filters.user(m.from_user.id))
+    input6: Message = await bot.listen(editable.chat.id )
     await input6.delete(True)
     await editable.delete()
     thumb = input6.text
