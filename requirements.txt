@@ -1,11 +1,11 @@
 Flask
-gunicorn==20.1.0
+gunicorn
 aiohttp
 pyrogram
 ffmpeg
 tgcrypto
 requests
-pyromod==1.5
+pyromod
 yt-dlp
 aiohttp
 aiofiles
