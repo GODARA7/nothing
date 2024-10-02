@@ -200,7 +200,7 @@ async def txt_handler(bot: Client, m: Message):
     else:
         
         editable  = await m.reply_text("Send links listed in a txt file in format **Name:link**") 
-    input0: Message = await bot.listen(editable.chat.id, filters.user(m.from_user.id))
+    input0: Message = await bot.listen(editable.chat.id )
     x = await input0.download()
 
     await input0.delete(True)
