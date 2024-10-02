@@ -47,7 +47,7 @@ bot = Client(
     api_hash=api_hash,
     bot_token=bot_token)
       
-@bot.on_message(filters.command(["start"]) & filters.chat(sudo_groups))
+@bot.on_message(filters.command(["start"]))
 async def start_handler(bot: Client, m: Message):
     menu_text = (
         "Welcome to Meta Downloader Bot! \n\n"
@@ -103,7 +103,7 @@ def humanbytes(size):
         n += 1
     return f"{str(round(size, 2))} {Dic_powerN[n]}B"
 
-@bot.on_message(filters.command(["pdf"])&(filters.chat(sudo_groups)))
+@bot.on_message(filters.command(["pdf"]))
 async def c_pdf(bot: Client, m: Message):
     editable = await m.reply_text("**Hello I am All in one pdf DL Bot\n\nSend TXT file To Download.**")
     input99: Message = await bot.listen(editable.chat.id)
@@ -191,14 +191,14 @@ async def terms_han(bot: Client, m: Message):
 	
 	await m.reply_text("Dear user,\n\nWelcome to our video downloader bot on Telegram. Before you start using our bot, please read these terms and conditions carefully.\n\nBy using our bot, you agree to the following terms and conditions:\n\n1. Our bot is intended for personal, non-commercial use only. You are responsible for any content that you download through our bot and you should ensure that you have the necessary permissions and rights to use and share the content.\n\n2. Downloading copyrighted content through our bot is strictly prohibited. If we receive any complaints of copyright infringement, we reserve the right to take down the infringing content and terminate the user's access to our bot.\n\n3. We do not store any of your personal data or download history. Your privacy and security are important to us, and we have taken all necessary measures to ensure that your information is safe and protected.\n\n4. We reserve the right to suspend or terminate the bot's services at any time and for any reason.\n\n5. By using our bot, you agree to indemnify and hold us harmless from any claims, damages,\nor losses arising from your use of our bot.\n\nIf you have any questions or concerns about our terms and conditions, please contact us.\n\nThank you for using our video downloader bot on Telegram.\n\nBest regards")
         
-@bot.on_message(filters.command(["tor"])&(filters.chat(sudo_groups)))
+@bot.on_message(filters.command(["tor"]))
 async def txt_handler(bot: Client, m: Message):
     
     if batch != []:
         await m.reply("**⚠️ One Process Is Already Running**", quote=True)
         return
     else:
-        batch.append(f'{m.from_user.id}')
+        
         editable  = await m.reply_text("Send links listed in a txt file in format **Name:link**") 
     input0: Message = await bot.listen(editable.chat.id, filters.user(m.from_user.id))
     x = await input0.download()
