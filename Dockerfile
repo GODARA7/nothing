@@ -1,9 +1,10 @@
-FROM ghcr.io/missemily2022/anasty:heroku
+FROM python:3.9.2-slim-buster
+RUN apt-get update -y && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends gcc libffi-dev musl-dev ffmpeg aria2 python3-pip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /usr/src/app
-RUN chmod 777 /usr/src/app
-
-COPY . .
-RUN pip3 install --no-cache-dir -r requirements.txt
-
-CMD ["gunicorn app:app & python3 main.py"]
+COPY . /app/
+WORKDIR /app/
+RUN pip3 install -r requirements.txt
+CMD gunicorn app:app & python3 main.py
