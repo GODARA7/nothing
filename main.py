@@ -33,7 +33,7 @@ from pytube import Playlist
 from pyrogram import Client, filters
 from pyrogram.errors.exceptions import MessageIdInvalid
 import os
-from moviepy.editor import *
+from moviepy.editor import
 import yt_dlp
 from bs4 import BeautifulSoup
 from pyrogram.types import InputMediaDocument
